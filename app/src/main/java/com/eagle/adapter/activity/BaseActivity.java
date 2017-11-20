@@ -10,8 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.eagle.adapter.R;
+import com.eagle.adapter.base.BaseEvent;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -45,6 +47,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @SuppressWarnings("unused")
+    @Subscribe
+    public void onEvent(BaseEvent event) {
     }
 
     public abstract int getContentLayout();

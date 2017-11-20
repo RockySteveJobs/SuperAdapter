@@ -73,9 +73,9 @@ public abstract class BaseRecycleActivity extends BaseActivity {
         mSRefreshLayout.finishLoadmore();
     }
 
-    @SuppressWarnings("unused")
-    @Subscribe
+    @Override
     public void onEvent(BaseEvent event) {
+        super.onEvent(event);
         recycleAdapter.onEvent(event);
     }
 

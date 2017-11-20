@@ -141,23 +141,48 @@ public abstract class AbstractRecycleAdapter<T extends AbstractItem, VH extends 
     @Override
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
         T t = getItemByViewType(viewType);
-        if (t != null) {
-            final View view = mInflater.inflate(t.getItemViewLayout(), parent, needRoot);
-            LogUtils.i("AbstractRecycleAdapter===========onCreateViewHolder ========创建了ViewHolder");
-            return (VH) t.getViewHolder(view);
+        if (t == null) {
+            LogUtils.e("AbstractRecycleAdapter=====onCreateViewHolder====if (t == null) {====没有创建ViewHolder");
+            return null;
         }
-        LogUtils.i("AbstractRecycleAdapter===========onCreateViewHolder ========没有创建ViewHolder");
-        return null;
+        if (t.getItemViewLayout() <= 0) {
+            LogUtils.e("AbstractRecycleAdapter=====onCreateViewHolder====if (t.getItemViewLayout() <= 0) {====没有创建ViewHolder");
+            return null;
+        }
+        View view = mInflater.inflate(t.getItemViewLayout(), parent, needRoot);
+        if (view == null) {
+            LogUtils.e("AbstractRecycleAdapter=====onCreateViewHolder====if (view == null) {====没有创建ViewHolder");
+            return null;
+        }
+        AbstractViewHolder holder = t.getViewHolder(view);
+        if (holder == null) {
+            LogUtils.e("AbstractRecycleAdapter=====onCreateViewHolder====if (holder == null) {====没有创建ViewHolder");
+            return null;
+        }
+        LogUtils.i("AbstractRecycleAdapter===========onCreateViewHolder========创建了ViewHolder");
+        return (VH) holder;
     }
 
     @Override
     public void onBindViewHolder(AbstractViewHolder holder, int position) {
+        if (holder == null) {
+            LogUtils.e("AbstractRecycleAdapter===========onBindViewHolder========if (holder == null) {====");
+            return;
+        }
+
         final int currentPosition = holder.getAdapterPosition();
         if (currentPosition == RecyclerView.NO_POSITION) {
+            LogUtils.e("AbstractRecycleAdapter===========onBindViewHolder========if (currentPosition == RecyclerView.NO_POSITION) {====");
             return;
         }
         //得到java对象
         T data = getItem(position);
+
+        if (data == null) {
+            LogUtils.e("AbstractRecycleAdapter===========onBindViewHolder========if (data == null) {====");
+            return;
+        }
+
         //设置位置
         data.setPosition(position);
 
@@ -176,7 +201,7 @@ public abstract class AbstractRecycleAdapter<T extends AbstractItem, VH extends 
             data.setViewHolder(holder);
         }
         bindData((VH) holder, data, position);
-        LogUtils.i("AbstractRecycleAdapter===========onBindViewHolder ========调用了binddata方法 " + data.getItemViewType());
+        LogUtils.i("AbstractRecycleAdapter===========onBindViewHolder ========调用了bindata方法 " + data.getItemViewType());
     }
 
 
@@ -229,7 +254,7 @@ public abstract class AbstractRecycleAdapter<T extends AbstractItem, VH extends 
 
     /**
      * 请务必做一些清理操作,
-     * 并在Activity或者Fragment的onDestory中调用
+     * 并在Activity或者Fragment的onDestroy中调用
      */
     public void doClear() {
         if (mListData != null) {

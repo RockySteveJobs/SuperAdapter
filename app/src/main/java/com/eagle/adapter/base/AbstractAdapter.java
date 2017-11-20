@@ -138,21 +138,26 @@ public abstract class AbstractAdapter<T extends AbstractItem, VH extends Abstrac
     public View getView(int position, View convertView, ViewGroup parent) {
         //得到java对象
         T data = getItem(position);
-        //设置位置
-        data.setPosition(position);
+        if (data == null || data.getItemViewLayout() <= 0) {
+            LogUtils.e("AbstractAdapter===========getView ========if (data == null || data.getItemViewLayout() <= 0) {====");
+            return null;
+        }
+
         //得到ViewHolder
         AbstractViewHolder viewHolder = null;
-        if (convertView == null) {
-            //todo  验证修改后的效果
+        if (convertView == null || !(convertView.getTag() instanceof AbstractViewHolder)) {
             convertView = mInflater.inflate(data.getItemViewLayout(), parent, needRoot);
 
             viewHolder = data.getViewHolder(convertView);
             convertView.setTag(viewHolder);
-            LogUtils.i("AbstractAdapter===========getview ========控件没有重用");
+            LogUtils.i("AbstractAdapter===========getView ========控件没有重用");
         } else {
-            LogUtils.i("AbstractAdapter===========getview ========控件重用了");
+            LogUtils.i("AbstractAdapter===========getView ========控件重用了");
             viewHolder = (AbstractViewHolder) convertView.getTag();
         }
+
+        //设置位置
+        data.setPosition(position);
 
         //设置相应的Adapter 和 Loader ,更方便的处理数据
         if (data.getContext() != mContext) {
@@ -167,7 +172,7 @@ public abstract class AbstractAdapter<T extends AbstractItem, VH extends Abstrac
         if (data.isReceiveEvent() && !eventList.contains(data)) {
             eventList.add(data);
         }
-        LogUtils.i("AbstractAdapter===========getview ========调用了binddata方法 " + data.getItemViewType());
+        LogUtils.i("AbstractAdapter===========getView ========调用了bindData方法 " + data.getItemViewType());
         bindData((VH) viewHolder, data, position);
         return convertView;
     }
@@ -206,7 +211,7 @@ public abstract class AbstractAdapter<T extends AbstractItem, VH extends Abstrac
 
     /**
      * 请务必做一些清理操作,
-     * 并在Activity或者Fragment的onDestory中调用
+     * 并在Activity或者Fragment的onDestroy中调用
      */
     public void doClear() {
         if (mListData != null) {

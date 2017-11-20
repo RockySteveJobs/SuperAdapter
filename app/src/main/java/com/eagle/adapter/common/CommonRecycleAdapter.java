@@ -89,7 +89,9 @@ public class CommonRecycleAdapter<T extends AbstractItem> extends AbstractRecycl
     };
 
     @Override
-    protected void bindData(AbstractViewHolder holder, @NonNull AbstractItem bean, int pos) {
-        bean.bindData(holder, shouldRequestThumb);
+    protected void bindData(AbstractViewHolder holder, AbstractItem bean, int pos) {
+        if (bean != null && holder != null) {
+            bean.bindData(holder, shouldRequestThumb);
+        }
     }
 }

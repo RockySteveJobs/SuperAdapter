@@ -103,6 +103,8 @@ public class CommonAdapter<T extends AbstractItem, VH extends AbstractViewHolder
 
     @Override
     protected void bindData(AbstractViewHolder holder, AbstractItem bean, int pos) {
-        bean.bindData(holder, shouldRequestThumb);
+        if (bean != null && holder != null) {
+            bean.bindData(holder, shouldRequestThumb);
+        }
     }
 }

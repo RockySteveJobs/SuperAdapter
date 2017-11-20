@@ -11,4 +11,11 @@
         android:text="Just A Test\nClick To Finish "
         android:textSize="20sp" />
 
+
+    <ImageView
+        android:id="@+id/imgv_TestSketch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/just_test_one" />
+
 </RelativeLayout>

@@ -26,7 +26,7 @@ public class TestCommonActivity extends BaseActivity {
         setToolBarTitle("Common Test");
         txtv_JustTest = findViewById(R.id.txtv_JustTest);
         txtv_JustTest.setOnClickListener(view -> {
-            imgv_TestSketch.setImageBitmap(ImageUtils.changeToSketch(BitmapFactory.decodeResource(getResources(), R.mipmap.just_test_one)));
+            imgv_TestSketch.setImageBitmap(ImageUtils.changeToSketch(this, BitmapFactory.decodeResource(getResources(), R.mipmap.just_test_one)));
         });
         imgv_TestSketch = findViewById(R.id.imgv_TestSketch);
     }

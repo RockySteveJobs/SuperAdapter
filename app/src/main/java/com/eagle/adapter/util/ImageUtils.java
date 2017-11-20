@@ -1,6 +1,7 @@
 package com.eagle.adapter.util;
 
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -8,20 +9,49 @@ import android.graphics.ColorFilter;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
+import android.os.Build;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
 
 import java.nio.IntBuffer;
 
 public class ImageUtils {
 
-    public static Bitmap changeToSketch(Bitmap bmp) {
+    private static final float BLUR_RADIUS = 24f;
+
+    public static Bitmap changeToSketch(Context context, Bitmap bmp) {
         Bitmap copy, invert, result;
         copy = bmp;
         copy = toGrayscale(copy);
         invert = createInvertedBitmap(copy);
-        invert = fastBlur(invert, 128);
+        invert = blur(context, invert);
         result = colorDodgeBlend(invert, copy);
 
         return result;
+    }
+
+    public static Bitmap blur(Context ctx, Bitmap image) {
+        if (Build.VERSION.SDK_INT >= 17) {
+            Bitmap photo = image.copy(Bitmap.Config.ARGB_8888, true);
+
+            try {
+                final RenderScript rs = RenderScript.create(ctx);
+                final Allocation input = Allocation.createFromBitmap(rs, photo, Allocation.MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT);
+                final Allocation output = Allocation.createTyped(rs, input.getType());
+                final ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
+                script.setRadius(BLUR_RADIUS); /* e.g. 3.f */
+                script.setInput(input);
+                script.forEach(output);
+                output.copyTo(photo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return photo;
+        } else {
+            return fastBlur(image, 128);
+        }
     }
 
     public static Bitmap fastBlur(Bitmap sentBitmap, int radius) {

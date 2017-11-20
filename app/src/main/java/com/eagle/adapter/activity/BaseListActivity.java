@@ -1,24 +1,22 @@
 package com.eagle.adapter.activity;
 
 
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.widget.ListView;
 
 import com.eagle.adapter.R;
 import com.eagle.adapter.base.AbstractItem;
 import com.eagle.adapter.base.BaseEvent;
-import com.eagle.adapter.common.CommonRecycleAdapter;
+import com.eagle.adapter.common.CommonAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseRecycleActivity extends BaseActivity {
+public abstract class BaseListActivity extends BaseActivity {
 
-    protected RecyclerView rv_RecycleList;
+    protected ListView lv_CommonList;
     protected List<AbstractItem> itemList;
-    protected CommonRecycleAdapter recycleAdapter;
+    protected CommonAdapter adapter;
 
     protected SmartRefreshLayout mSRefreshLayout;
 
@@ -26,10 +24,9 @@ public abstract class BaseRecycleActivity extends BaseActivity {
     public void initView() {
         itemList = new ArrayList<>();
 
-        rv_RecycleList = findViewById(R.id.rv_RecycleList);
-        rv_RecycleList.setLayoutManager(new LinearLayoutManager(this));
-        recycleAdapter = new CommonRecycleAdapter(this, itemList, rv_RecycleList);
-        rv_RecycleList.setAdapter(recycleAdapter);
+        lv_CommonList = findViewById(R.id.lv_CommonList);
+        adapter = new CommonAdapter(this, itemList, lv_CommonList, getItemTypeCount());
+        lv_CommonList.setAdapter(adapter);
 
 
         mSRefreshLayout = findViewById(R.id.srl_RefreshLayout);
@@ -45,6 +42,8 @@ public abstract class BaseRecycleActivity extends BaseActivity {
         });
         initListData();
     }
+
+    public abstract int getItemTypeCount();
 
     public abstract void initListData();
 
@@ -75,33 +74,33 @@ public abstract class BaseRecycleActivity extends BaseActivity {
     @Override
     public void onEvent(BaseEvent event) {
         super.onEvent(event);
-        recycleAdapter.onEvent(event);
+        adapter.onEvent(event);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        recycleAdapter.doClear();
+        adapter.doClear();
     }
 
     @Override
     public int getContentLayout() {
-        return R.layout.activity_base_recycle;
+        return R.layout.activity_base_list;
     }
 
     public void notifyDataSetChanged() {
-        recycleAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 
     public void clearData() {
         itemList.clear();
-        recycleAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 
     public void addListData(List<AbstractItem> list) {
         if (list != null && !list.isEmpty()) {
             itemList.addAll(list);
-            recycleAdapter.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();
         }
     }
 

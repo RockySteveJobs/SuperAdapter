@@ -1,25 +1,28 @@
 package com.eagle.adapter.activity;
 
+
 import android.content.Context;
 import android.content.Intent;
 
-import com.eagle.adapter.base.BaseEvent;
 import com.eagle.adapter.item.BaseTestItem;
 import com.eagle.adapter.item.TestOne;
 import com.eagle.adapter.item.TestOneItem;
 
+public class TestListActivity extends BaseListActivity {
 
-public class TestRecycleActivity extends BaseRecycleActivity {
+    @Override
+    public int getItemTypeCount() {
+        return BaseTestItem.itemTypeCount;
+    }
 
     @Override
     public void initListData() {
-        setToolBarTitle("Recycle Test");
+        setToolBarTitle("Common List Test");
         audoRefreshData();
     }
 
     @Override
     public void refreshListData() {
-
         //todo call refresh api
 
         postDelayed(() -> {
@@ -53,7 +56,7 @@ public class TestRecycleActivity extends BaseRecycleActivity {
     }
 
     public static void startActivity(Context context) {
-        Intent intent = new Intent(context, TestRecycleActivity.class);
+        Intent intent = new Intent(context, TestListActivity.class);
         context.startActivity(intent);
     }
 }

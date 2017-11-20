@@ -69,5 +69,4 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void addView(View view) {
         fram_Container.addView(view);
     }
-
 }

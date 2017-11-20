@@ -32,8 +32,8 @@ public abstract class AbstractAdapter<T extends AbstractItem, VH extends Abstrac
     protected Context mContext;
     protected LayoutInflater mInflater;
     protected List<T> mListData;
-    //是否需要根View进行In
-    protected boolean needRoot;
+    //是否需要添加到根View
+    protected boolean attachToRoot;
     //这个是对图片的请求很有用处,即true时请求,false不请求(比如用户快速滑动页面)
     protected boolean shouldRequestThumb = true;
     //接收事件的Item列表
@@ -146,7 +146,7 @@ public abstract class AbstractAdapter<T extends AbstractItem, VH extends Abstrac
         //得到ViewHolder
         AbstractViewHolder viewHolder = null;
         if (convertView == null || !(convertView.getTag() instanceof AbstractViewHolder)) {
-            convertView = mInflater.inflate(data.getItemViewLayout(), parent, needRoot);
+            convertView = mInflater.inflate(data.getItemViewLayout(), parent, attachToRoot);
 
             viewHolder = data.getViewHolder(convertView);
             convertView.setTag(viewHolder);

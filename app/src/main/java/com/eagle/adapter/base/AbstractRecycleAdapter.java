@@ -31,8 +31,8 @@ public abstract class AbstractRecycleAdapter<T extends AbstractItem, VH extends 
     protected Context mContext;
     protected LayoutInflater mInflater;
     protected List<T> mListData;
-    //是否需要根View进行
-    protected boolean needRoot;
+    //是否需要添加到根View
+    protected boolean attachToRoot;
     //这个是对图片的请求很有用处,即true时请求,false不请求(比如用户快速滑动页面)
     protected boolean shouldRequestThumb = true;
     //接收事件的Item列表
@@ -149,7 +149,7 @@ public abstract class AbstractRecycleAdapter<T extends AbstractItem, VH extends 
             LogUtils.e("AbstractRecycleAdapter=====onCreateViewHolder====if (t.getItemViewLayout() <= 0) {====没有创建ViewHolder");
             return null;
         }
-        View view = mInflater.inflate(t.getItemViewLayout(), parent, needRoot);
+        View view = mInflater.inflate(t.getItemViewLayout(), parent, attachToRoot);
         if (view == null) {
             LogUtils.e("AbstractRecycleAdapter=====onCreateViewHolder====if (view == null) {====没有创建ViewHolder");
             return null;

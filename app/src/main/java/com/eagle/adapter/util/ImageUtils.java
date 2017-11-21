@@ -23,7 +23,6 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 
-import com.eagle.adapter.imgcnvrt.ConvolutionMatrix;
 
 import java.nio.IntBuffer;
 import java.util.Random;
@@ -739,7 +738,7 @@ public class ImageUtils {
         return bmOut;
     }
 
-    public Bitmap applyGaussianBlurEffect(Bitmap src) {
+    /*public Bitmap applyGaussianBlurEffect(Bitmap src) {
         double[][] GaussianBlurConfig = new double[][]{
                 {1, 2, 1},
                 {2, 4, 2},
@@ -807,7 +806,7 @@ public class ImageUtils {
         convMatrix.Factor = 1;
         convMatrix.Offset = 95;
         return ConvolutionMatrix.computeConvolution3x3(src, convMatrix);
-    }
+    }*/
 
     public Bitmap applyBoostEffect(Bitmap src, int type, float percent) {
         int width = src.getWidth();

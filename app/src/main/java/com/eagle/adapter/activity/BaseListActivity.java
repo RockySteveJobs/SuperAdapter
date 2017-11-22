@@ -1,6 +1,7 @@
 package com.eagle.adapter.activity;
 
 
+import android.view.View;
 import android.widget.ListView;
 
 import com.eagle.adapter.R;
@@ -92,9 +93,24 @@ public abstract class BaseListActivity extends BaseActivity {
         adapter.notifyDataSetChanged();
     }
 
+    public void removeItem(int pos) {
+        if (itemList.size() > pos) {
+            itemList.remove(pos);
+            notifyDataSetChanged();
+        }
+    }
+
     public void clearData() {
         itemList.clear();
         adapter.notifyDataSetChanged();
+    }
+
+    public void addHeaderView(View view) {
+        lv_CommonList.addHeaderView(view);
+    }
+
+    public void addFooterView(View view) {
+        lv_CommonList.addFooterView(view);
     }
 
     public void addListData(List<AbstractItem> list) {

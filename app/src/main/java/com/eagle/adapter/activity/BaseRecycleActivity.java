@@ -93,6 +93,24 @@ public abstract class BaseRecycleActivity extends BaseActivity {
         recycleAdapter.notifyDataSetChanged();
     }
 
+    public void notifyItemChanged(int pos) {
+        recycleAdapter.notifyItemChanged(pos);
+    }
+
+    public void removeItem(int pos) {
+        if (itemList.size() > pos) {
+            itemList.remove(pos);
+            recycleAdapter.notifyItemRemoved(pos);
+        }
+    }
+
+    public void insertItem(int pos, AbstractItem item) {
+        if (itemList.size() >= pos) {
+            itemList.add(pos, item);
+            recycleAdapter.notifyItemInserted(pos);
+        }
+    }
+
     public void clearData() {
         itemList.clear();
         recycleAdapter.notifyDataSetChanged();

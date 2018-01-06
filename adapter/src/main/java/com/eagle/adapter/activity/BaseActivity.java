@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import com.eagle.adapter.R;
 import com.eagle.adapter.base.BaseEvent;
@@ -69,4 +72,37 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void addView(View view) {
         fram_Container.addView(view);
     }
+
+    public void addFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.fram_Container, fragment);
+        transaction.commitAllowingStateLoss();
+    }
+
+    public void replaceFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fram_Container, fragment);
+        transaction.commitAllowingStateLoss();
+    }
+
+    public void removeFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.remove(fragment);
+        transaction.commitAllowingStateLoss();
+    }
+
+    /**
+     * 设置 Activity 全屏
+     */
+    public void setFullScreen() {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+    /**
+     * 设置 Activity 退出全屏
+     */
+    public void exitFullScreen() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
 }

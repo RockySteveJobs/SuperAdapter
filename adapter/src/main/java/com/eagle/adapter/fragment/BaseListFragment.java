@@ -1,0 +1,122 @@
+package com.eagle.adapter.fragment;
+
+
+import android.view.View;
+import android.widget.ListView;
+
+import com.eagle.adapter.R;
+import com.eagle.adapter.base.AbstractItem;
+import com.eagle.adapter.base.BaseEvent;
+import com.eagle.adapter.common.CommonAdapter;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class BaseListFragment extends BaseFragment {
+
+    protected ListView lv_CommonList;
+    protected List<AbstractItem> itemList;
+    protected CommonAdapter adapter;
+
+    protected SmartRefreshLayout mSRefreshLayout;
+
+    @Override
+    public void initView() {
+        itemList = new ArrayList<>();
+
+        lv_CommonList = findViewById(R.id.lv_CommonList);
+        adapter = new CommonAdapter(getContext(), itemList, lv_CommonList, getItemTypeCount());
+        lv_CommonList.setAdapter(adapter);
+
+
+        mSRefreshLayout = findViewById(R.id.srl_RefreshLayout);
+        mSRefreshLayout.setEnableRefresh(true);
+        mSRefreshLayout.setEnableLoadmore(true);
+        mSRefreshLayout.setEnableAutoLoadmore(true);
+        mSRefreshLayout.setOnRefreshListener(refreshlayout -> {
+            refreshListData();
+        });
+
+        mSRefreshLayout.setOnLoadmoreListener(refreshlayout -> {
+            loadMoreListData();
+        });
+        initListData();
+    }
+
+    public abstract int getItemTypeCount();
+
+    public abstract void initListData();
+
+    public abstract void refreshListData();
+
+    public abstract void loadMoreListData();
+
+    public void showError() {
+
+    }
+
+    public void showNoData() {
+
+    }
+
+    public void audoRefreshData() {
+        mSRefreshLayout.autoRefresh();
+    }
+
+    public void finishRefresh() {
+        mSRefreshLayout.finishRefresh();
+    }
+
+    public void finishLoadMore() {
+        mSRefreshLayout.finishLoadmore();
+    }
+
+    @Override
+    public void onEvent(BaseEvent event) {
+        super.onEvent(event);
+        adapter.onEvent(event);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        adapter.doClear();
+    }
+
+    @Override
+    public int getContentLayout() {
+        return R.layout.fragment_base_list;
+    }
+
+    public void notifyDataSetChanged() {
+        adapter.notifyDataSetChanged();
+    }
+
+    public void removeItem(int pos) {
+        if (itemList.size() > pos) {
+            itemList.remove(pos);
+            notifyDataSetChanged();
+        }
+    }
+
+    public void clearData() {
+        itemList.clear();
+        adapter.notifyDataSetChanged();
+    }
+
+    public void addHeaderView(View view) {
+        lv_CommonList.addHeaderView(view);
+    }
+
+    public void addFooterView(View view) {
+        lv_CommonList.addFooterView(view);
+    }
+
+    public void addListData(List<AbstractItem> list) {
+        if (list != null && !list.isEmpty()) {
+            itemList.addAll(list);
+            adapter.notifyDataSetChanged();
+        }
+    }
+}

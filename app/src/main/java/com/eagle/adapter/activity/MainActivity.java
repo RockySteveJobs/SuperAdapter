@@ -17,6 +17,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        setToolBarTitle("Main");
         txtv_CommonTest = findViewById(R.id.txtv_CommonTest);
         txtv_CommonTest.setOnClickListener(view -> {
             TestCommonActivity.startActivity(this);

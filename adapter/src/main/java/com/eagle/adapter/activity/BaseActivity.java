@@ -1,13 +1,18 @@
 package com.eagle.adapter.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -22,6 +27,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected LayoutInflater mInflater;
     private ViewGroup fram_Container;
+    private ViewGroup fram_TitleBar;
+    private Toolbar toolbar;
 
     protected Handler handler = new Handler(Looper.getMainLooper());
 
@@ -30,7 +37,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mInflater = LayoutInflater.from(this);
         setContentView(R.layout.activity_base);
+
+        fram_TitleBar = findViewById(R.id.fram_TitleBar);
         fram_Container = findViewById(R.id.fram_Container);
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(v -> onToolBarBackClick());
+
         if (getContentLayout() > 0) {
             mInflater.inflate(getContentLayout(), fram_Container);
         }
@@ -38,12 +52,39 @@ public abstract class BaseActivity extends AppCompatActivity {
         initView();
     }
 
-    public void setToolBarTitle(String title) {
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
-    public void setToolBarTitle(int title) {
+    public void setToolBarTitle(String title) {
+        if (toolbar == null) {
+            return;
+        }
 
+        ActionBar mActionBar = getSupportActionBar();
+        if (mActionBar != null) {
+            mActionBar.setTitle(title);
+            mActionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    protected void onToolBarBackClick() {
+        finish();
+    }
+
+    public void setToolBarTitle(@StringRes int title) {
+        setToolBarTitle(getString(title));
+    }
+
+    public void replaceDefaultToolBar(View titleBar) {
+        toolbar = null;
+        fram_TitleBar.removeAllViews();
+        fram_TitleBar.addView(titleBar);
     }
 
     @Override

@@ -19,6 +19,10 @@ import android.view.WindowManager;
 
 import com.eagle.adapter.R;
 import com.eagle.adapter.base.BaseEvent;
+import com.scwang.smartrefresh.header.MaterialHeader;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
+import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -144,6 +148,22 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public void exitFullScreen() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+    static {
+        SmartRefreshLayout.setDefaultRefreshHeaderCreater((context, layout) -> {
+            layout.setPrimaryColorsId(android.R.color.white, android.R.color.white);
+            MaterialHeader header = new MaterialHeader(context);
+            layout.setEnableHeaderTranslationContent(false);
+            return header;
+
+        });
+        SmartRefreshLayout.setDefaultRefreshFooterCreater((context, layout) -> {
+            BallPulseFooter footer = new BallPulseFooter(context).setSpinnerStyle(SpinnerStyle.Scale);
+            footer.setBackgroundColor(Color.parseColor("#F0F0F0"));
+            footer.setIndicatorColor(context.getResources().getColor(android.R.color.white));
+            return footer;
+        });
     }
 
 }

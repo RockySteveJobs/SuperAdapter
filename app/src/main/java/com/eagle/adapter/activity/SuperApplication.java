@@ -22,22 +22,5 @@ public class SuperApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-    }
-
-    static {
-        SmartRefreshLayout.setDefaultRefreshHeaderCreater((context, layout) -> {
-            layout.setPrimaryColorsId(android.R.color.white, android.R.color.white);
-            MaterialHeader header = new MaterialHeader(context);
-            layout.setEnableHeaderTranslationContent(false);
-            return header;
-
-        });
-        SmartRefreshLayout.setDefaultRefreshFooterCreater((context, layout) -> {
-            BallPulseFooter footer = new BallPulseFooter(context).setSpinnerStyle(SpinnerStyle.Scale);
-            footer.setBackgroundColor(Color.parseColor("#F0F0F0"));
-            footer.setIndicatorColor(context.getResources().getColor(android.R.color.white));
-            return footer;
-        });
     }
 }

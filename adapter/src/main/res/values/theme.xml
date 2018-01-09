@@ -4,8 +4,8 @@
     <!--Base Theme-->
 
     <style name="BaseTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/common_white</item>
-        <item name="colorPrimaryDark">@color/common_black</item>
+        <item name="colorPrimary">@color/base_colorPrimary</item>
+        <item name="colorPrimaryDark">@color/base_colorPrimary</item>
         <item name="colorAccent">@color/base_colorAccent</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>

@@ -91,6 +91,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         fram_TitleBar.addView(titleBar);
     }
 
+    public void removeDefaultToolBar() {
+        toolbar = null;
+        fram_TitleBar.removeAllViews();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
